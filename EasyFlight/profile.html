@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="img/logofull.png" type="png">
+    <title>Профиль</title>
+    <style>
+        :root {
+           --primary: #00509a;
+            --primary-dark: #00305e;
+            --secondary: #005758;
+            --text: #202124;
+            --background: #f5f5f5;
+            --surface: #f8f9fa;
+            --shadow: 0 1px 2px rgba(0,0,0,0.12), 0 -1px 0 rgba(0,0,0,0.12), 0 1px 3px rgba(0,0,0,0.24);
+        }
+
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-size: 16px;
+        }
+
+        body {
+            font-family: 'Roboto', 'Arial', sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            background-color: var(--background);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .main-content {
+            flex: 1 0 auto;
+        }
+
+       .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            position: relative;
+        }
+
+        .logo span {
+            color: var(--secondary);
+        }
+
+        .logo-icon {
+            width: 50px;
+            height: 60px;
+            flex-shrink: 0;
+            margin-right: 8px;
+            transition: opacity 0.3s ease;
+        }
+
+        .logo-icon.hover {
+            position: absolute;
+            left: 0;
+            opacity: 0;
+        }
+
+        .logo:hover .logo-icon.normal {
+            opacity: 0;
+        }
+
+        .logo:hover .logo-icon.hover {
+            opacity: 1;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-menu li {
+            margin-left: 30px;
+            position: relative;
+        } 
+
+        .nav-menu li:not(:last-child)::after {
+            content: "";
+            position: absolute;
+
+            right: -15px;
+            top: 50%;
+            transform: translateY(-50%);
+            height: 15px;
+            width: 2px;
+            background-color: #ccc;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: inherit;
+            position: relative;
+            font-weight: 500;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 30px;
+            overflow: hidden;
+        }
+
+        .nav-text {
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+
+        .nav-icon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, 100%);
+            opacity: 0;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            width: 30px;
+            height: 30px;
+            object-fit: contain;
+        }
+
+        .nav-menu a::after {
+            display: none;
+        }
+
+        .nav-menu a:hover .nav-text {
+            transform: translateY(-100%);
+            opacity: 0;
+        }
+
+        .nav-menu a:hover .nav-icon {
+            transform: translate(-50%, -50%);
+            opacity: 1;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            background-color: white;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 5px 0;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-dark);
+        }
+        
+        .profile-container {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 30px;
+            padding: 40px 0;
+        }
+        
+        .profile-sidebar {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .user-info h2 {
+            margin-bottom: 20px;
+            color: var(--text);
+        }
+        
+        .user-stats {
+            margin: 20px 0;
+            padding: 15px;
+            background: var(--surface);
+            border-radius: 4px;
+        }
+        
+        .logout-btn {
+            width: 100%;
+            padding: 10px;
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .logout-btn:hover {
+            background-color: #a82532;
+        }
+        
+        .bookings-section {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .booking-card {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 20px;
+            margin-bottom: 15px;
+        }
+
+        footer {
+            background-color: #253a4e;
+            color: white;
+            padding: 20px 0 20px;
+            flex-shrink: 0;
+        }
+
+        .footer-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-content">
+        <header>
+            <div class="container header-container">
+              <a href="index.html" class="logo">
+                <img src="img/logoE.png" alt="" class="logo-icon normal">
+                <img src="img/logoF.png" alt="" class="logo-icon hover">
+                <span>Easy</span>Flight
+            </a>
+                <ul class="nav-menu">
+                    <li><a href="index.html">
+                    <span class="nav-text">На главную</span>
+                    <img src="img/logofull.png" alt="На главную" class="nav-icon"></a></li>
+                </ul>
+            </div>
+        </header>
+
+        <div class="container">
+            <div class="profile-container">
+                <div class="profile-sidebar">
+                    <div class="user-info">
+                        <h2>Дарья Шиханова</h2>
+                        <div class="user-stats">
+                            <p><strong>Количество полетов:</strong> 67</p>
+                        </div>
+                    </div>
+                    <button class="logout-btn">Выйти из кабинета</button>
+                </div>
+                
+                <div class="bookings-section">
+                    <h2>Предстоящие бронирования</h2>
+                    
+                    <div class="booking-card">
+                        <p><strong>Код бронирования:</strong> DO-628122</p>
+                        <p><strong>Дата вылета:</strong> 05.12.2025</p>
+                        <p><strong>Время вылета:</strong> 12:50</p>
+                        <p><strong>Время прилета:</strong> 23:45</p>
+                        <p><strong>Аэропорт вылета:</strong> Шереметьево (Moscow)</p>
+                        <p><strong>Аэропорт назначения:</strong> Симферополь (Simferopol)</p>
+                    </div>
+                    
+                    <div class="booking-card">
+                        <p><strong>Код бронирования:</strong> TA-917256</p>
+                        <p><strong>Дата вылета:</strong> 19.12.2025</p>
+                        <p><strong>Время вылета:</strong> 09:11</p>
+                        <p><strong>Время прилета:</strong> 20:06</p>
+                        <p><strong>Аэропорт вылета:</strong> Симферополь (Simferopol)</p>
+                        <p><strong>Аэропорт назначения:</strong> Шереметьево (Moscow)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-container">
+                <div>
+                    <div class="logo" style="color: white; margin-bottom: 10px;">EasyFlight</div>
+                    <p>Сделаем авиаперелеты доступными вместе!</p>
+                </div>
+                <div>
+                    <div style="font-size: 1.5rem; font-weight: 700; margin-bottom: 10px;">8 (800) 111-22-33</div>
+                    <p style="margin-top: 18px;">Бесплатный звонок по России</p>
+                </div>
+            </div>
+            <div style="text-align: center; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
+                &copy; 2025 EasyFlight. Все права защищены.
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
